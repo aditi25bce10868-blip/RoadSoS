@@ -4,22 +4,24 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
+  Modal,
   SafeAreaView,
 } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { useSOS } from '@/hooks/useSOS';
 import { useSOSStore } from '@/store/sosStore';
 
-export default function ConfirmationModal() {
-  const { startCountdown } = useSOS();
-  const { sos } = useSOSStore();
+export default function WhoNeedsHelpModal() {
+  const { setWhoNeedsHelp } = useSOSStore();
 
-  const handleConfirm = () => {
-    // Navigate to countdown screen then startCountdown manages the rest
-    router.replace('/emergency/countdown');
-    // Small delay to let navigation settle before starting timer
-    setTimeout(() => startCountdown(), 100);
+  const handleSelf = () => {
+    setWhoNeedsHelp('self');
+    router.push('/emergency/confirmation');
+  };
+
+  const handleOther = () => {
+    setWhoNeedsHelp('other');
+    router.push('/emergency/confirmation');
   };
 
   const handleCancel = () => {
@@ -31,35 +33,27 @@ export default function ConfirmationModal() {
       <View style={styles.overlay}>
         <View style={styles.modal}>
           <View style={styles.iconCircle}>
-            <Ionicons name="warning" size={28} color="#CC0000" />
+            <Ionicons name="alert-circle" size={28} color="#CC0000" />
           </View>
 
-          <Text style={styles.heading}>Emergency Alert</Text>
+          <Text style={styles.heading}>Who Needs Help?</Text>
           <Text style={styles.subtitle}>
-            Are you in an emergency? Confirming will send an SOS alert to
-            nearby services and your emergency contacts.
+            Please select who requires emergency assistance
           </Text>
 
-          <TouchableOpacity
-            style={styles.btnRed}
-            onPress={handleConfirm}
-            accessibilityRole="button"
-            accessibilityLabel="Yes, send SOS Alert"
-          >
-            <Text style={styles.btnRedText}>Yes, Send SOS Alert</Text>
+          <TouchableOpacity style={styles.btnRed} onPress={handleSelf} accessibilityRole="button">
+            <Ionicons name="person" size={16} color="#FFFFFF" />
+            <Text style={styles.btnRedText}>I Want Help</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.btnGray}
-            onPress={handleCancel}
-            accessibilityRole="button"
-          >
-            <Text style={styles.btnGrayText}>Cancel</Text>
+          <TouchableOpacity style={styles.btnOutline} onPress={handleOther} accessibilityRole="button">
+            <Ionicons name="people" size={16} color="#CC0000" />
+            <Text style={styles.btnOutlineText}>Somebody Else Wants Help</Text>
           </TouchableOpacity>
 
-          <Text style={styles.warning}>
-            False alerts may result in unnecessary emergency response
-          </Text>
+          <TouchableOpacity onPress={handleCancel} accessibilityRole="button" style={styles.cancelLink}>
+            <Text style={styles.cancelText}>Cancel</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
@@ -118,32 +112,38 @@ const styles = StyleSheet.create({
     paddingVertical: 13,
     backgroundColor: '#CC0000',
     borderRadius: 12,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    gap: 7,
   },
   btnRedText: {
     color: '#FFFFFF',
     fontSize: 13,
     fontWeight: '500',
   },
-  btnGray: {
+  btnOutline: {
     width: '100%',
     paddingVertical: 13,
     backgroundColor: 'transparent',
-    borderWidth: 1,
-    borderColor: '#E5E5EA',
+    borderWidth: 1.5,
+    borderColor: '#CC0000',
     borderRadius: 12,
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
+    gap: 7,
   },
-  btnGrayText: {
-    color: '#111111',
+  btnOutlineText: {
+    color: '#CC0000',
     fontSize: 13,
     fontWeight: '500',
   },
-  warning: {
-    fontSize: 11,
-    color: '#AAAAAA',
-    textAlign: 'center',
+  cancelLink: {
+    padding: 3,
+  },
+  cancelText: {
+    fontSize: 12,
+    color: '#888888',
   },
 });
