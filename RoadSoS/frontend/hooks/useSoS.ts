@@ -1,26 +1,25 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
-import { router } from 'expo-router';
-import { useSOSStore } from '@/store/sosStore';
-import { useLocation } from './useLocation';
+import { useRef, useCallback, useEffect } from 'react';
+import { useRouter } from 'expo-router';
+import { useSOSStore } from '../store/sosStore';
 
 const COUNTDOWN_SECONDS = 10;
 
-interface UseSOSReturn {
-  countdownValue: number;
-  isCountingDown: boolean;
-  startCountdown: () => void;
-  cancelCountdown: () => void;
-  cancelActiveSOS: () => void;
-}
+export function useSOS() {
+  const router = useRouter();
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-export function useSOS(): UseSOSReturn {
-  const [countdownValue, setCountdownValue] = useState(COUNTDOWN_SECONDS);
-  const [isCountingDown, setIsCountingDown] = useState(false);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const {
+    status,
+    whoNeedsHelp,
+    countdownValue,
+    setStatus,
+    setWhoNeedsHelp,
+    setCountdown,
+    activateSOS,
+    cancelSOS,
+  } = useSOSStore();
 
-  const { setStatus, triggerSOS, cancelSOS, reset } = useSOSStore();
-  const { startTracking } = useLocation();
-
+  /** Clear any running countdown interval. */
   const clearTimer = useCallback(() => {
     if (timerRef.current) {
       clearInterval(timerRef.current);
@@ -28,51 +27,68 @@ export function useSOS(): UseSOSReturn {
     }
   }, []);
 
-  const startCountdown = useCallback(() => {
-    clearTimer();
-    setCountdownValue(COUNTDOWN_SECONDS);
-    setIsCountingDown(true);
+  /** User presses the big SOS button → navigate to "Who Needs Help?" */
+  const triggerSOS = useCallback(() => {
+    setStatus('who_needs_help');
+    router.push('/emergency/whoNeedsHelp');
+  }, [router, setStatus]);
+
+  /** After "Who Needs Help?" choice → navigate to confirmation */
+  const selectWhoNeedsHelp = useCallback(
+    (who: 'self' | 'other') => {
+      setWhoNeedsHelp(who);
+      setStatus('confirming');
+      if (who === 'self') {
+        router.push('/emergency/confirmation');
+      } else {
+        // "Somebody else" → dedicated help screen (map + nearby services + call buttons)
+        setStatus('active');
+        router.push('/emergency/somebodyElse');
+      }
+    },
+    [router, setWhoNeedsHelp, setStatus, activateSOS]
+  );
+
+  /** User confirms → start 10-second countdown */
+  const confirmSOS = useCallback(() => {
     setStatus('countdown');
-    startTracking();
+    setCountdown(COUNTDOWN_SECONDS);
+    router.replace('/(tabs)/sos'); // shows countdown overlay
 
     timerRef.current = setInterval(() => {
-      setCountdownValue((prev) => {
-        const next = prev - 1;
+      useSOSStore.setState((state) => {
+        const next = state.countdownValue - 1;
         if (next <= 0) {
           clearTimer();
-          setIsCountingDown(false);
-          triggerSOS();
-          router.replace('/tracking');
-          return 0;
+          // Activate after small delay so UI shows "0"
+          setTimeout(() => {
+            activateSOS();
+            router.replace('/(tabs)/tracking');
+          }, 600);
+          return { countdownValue: 0 };
         }
-        return next;
+        return { countdownValue: next };
       });
     }, 1000);
-  }, [clearTimer, setStatus, startTracking, triggerSOS]);
+  }, [router, setStatus, setCountdown, activateSOS, clearTimer]);
 
-  const cancelCountdown = useCallback(() => {
+  /** Cancel at any point and reset state. */
+  const cancelAlert = useCallback(() => {
     clearTimer();
-    setIsCountingDown(false);
-    setCountdownValue(COUNTDOWN_SECONDS);
-    reset();
-    router.replace('/');
-  }, [clearTimer, reset]);
-
-  const cancelActiveSOS = useCallback(() => {
     cancelSOS();
-    reset();
-    router.replace('/');
-  }, [cancelSOS, reset]);
+    router.replace('/(tabs)/sos');
+  }, [router, clearTimer, cancelSOS]);
 
-  useEffect(() => {
-    return () => clearTimer();
-  }, [clearTimer]);
+  // Clean up on unmount
+  useEffect(() => () => clearTimer(), [clearTimer]);
 
   return {
+    status,
+    whoNeedsHelp,
     countdownValue,
-    isCountingDown,
-    startCountdown,
-    cancelCountdown,
-    cancelActiveSOS,
+    triggerSOS,
+    selectWhoNeedsHelp,
+    confirmSOS,
+    cancelAlert,
   };
 }
