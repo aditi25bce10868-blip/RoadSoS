@@ -1,78 +1,104 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
-import { SOSLocation } from '@/types/sos.types';
+import { Ionicons } from '@expo/vector-icons';
 
-interface MapViewProps {
-  location: SOSLocation | null;
+interface MapViewComponentProps {
+  address?: string;
+  latitude?: number;
+  longitude?: number;
 }
 
-/**
- * Simplified map placeholder that mirrors the design.
- * In production, replace the map-area with react-native-maps <MapView>.
- */
-export function SOSMapView({ location }: MapViewProps) {
-  const pulseAnim = useRef(new Animated.Value(1)).current;
-  const blinkAnim = useRef(new Animated.Value(1)).current;
+export function MapViewComponent({
+  address = 'Downtown, Main Street, Los Angeles',
+  latitude = 34.0522,
+  longitude = -118.2437,
+}: MapViewComponentProps) {
+  // Pulse ring: scale and opacity must be separate Animated.Values
+  const pulseScale = useRef(new Animated.Value(1)).current;
+  const pulseOpacity = useRef(new Animated.Value(0.7)).current;
+  // Live dot blink
+  const blinkOpacity = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
+    // Pulse ring
     Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnim, { toValue: 1.5, duration: 800, useNativeDriver: true }),
-        Animated.timing(pulseAnim, { toValue: 1, duration: 800, useNativeDriver: true }),
+      Animated.parallel([
+        Animated.sequence([
+          Animated.timing(pulseScale, { toValue: 1.6, duration: 900, useNativeDriver: true }),
+          Animated.timing(pulseScale, { toValue: 1.0, duration: 0, useNativeDriver: true }),
+        ]),
+        Animated.sequence([
+          Animated.timing(pulseOpacity, { toValue: 0, duration: 900, useNativeDriver: true }),
+          Animated.timing(pulseOpacity, { toValue: 0.7, duration: 0, useNativeDriver: true }),
+        ]),
       ])
     ).start();
 
+    // Blink
     Animated.loop(
       Animated.sequence([
-        Animated.timing(blinkAnim, { toValue: 0.3, duration: 600, useNativeDriver: true }),
-        Animated.timing(blinkAnim, { toValue: 1, duration: 600, useNativeDriver: true }),
+        Animated.timing(blinkOpacity, { toValue: 0.15, duration: 600, useNativeDriver: true }),
+        Animated.timing(blinkOpacity, { toValue: 1, duration: 600, useNativeDriver: true }),
       ])
     ).start();
+
+    // Cleanup
+    return () => {
+      pulseScale.stopAnimation();
+      pulseOpacity.stopAnimation();
+      blinkOpacity.stopAnimation();
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <View style={styles.card}>
-      {/* Map placeholder */}
+      {/* Map illustration */}
       <View style={styles.mapArea}>
+        {/* Roads */}
+        <View style={styles.roadH} />
+        <View style={styles.roadV} />
+
         {/* Buildings */}
         <View style={[styles.block, { width: 58, height: 38, top: 10, left: 55 }]} />
         <View style={[styles.block, { width: 42, height: 48, top: 9, left: 196 }]} />
         <View style={[styles.block, { width: 52, height: 34, top: 82, left: 48 }]} />
         <View style={[styles.block, { width: 46, height: 42, top: 88, left: 196 }]} />
-        {/* Roads */}
-        <View style={styles.roadH} />
-        <View style={styles.roadV} />
-        {/* Location label */}
-        <View style={styles.yourLocation}>
-          <Text style={styles.yourLocationText}>📍 Your Location</Text>
+
+        {/* Your Location chip */}
+        <View style={styles.locationLabel}>
+          <Ionicons name="location" size={11} color="#CC0000" />
+          <Text style={styles.locationLabelText}>Your Location</Text>
         </View>
-        {/* Dots */}
-        <View style={[styles.dot, styles.dotYou]} />
-        {/* Pulsing red dot */}
+
+        {/* User dot */}
+        <View style={[styles.dot, styles.dotUser]} />
+
+        {/* Pulse ring — MUST be its own Animated.View, separate from the pin dot */}
         <Animated.View
           style={[
-            styles.dotPulse,
-            { transform: [{ scale: pulseAnim }] },
+            styles.pulseRing,
+            { opacity: pulseOpacity, transform: [{ scale: pulseScale }] },
           ]}
         />
+
+        {/* Emergency pin */}
         <View style={[styles.dot, styles.dotEmergency]} />
+
+        {/* Service dot */}
         <View style={[styles.dot, styles.dotService]} />
       </View>
 
-      {/* Info row */}
-      <View style={styles.infoRow}>
-        <Text style={styles.infoPin}>📍</Text>
-        <View>
-          <Text style={styles.infoName}>
-            {location?.address ?? 'Downtown, Main Street, Los Angeles'}
-          </Text>
+      {/* Info bar */}
+      <View style={styles.infoBar}>
+        <Ionicons name="location" size={16} color="#CC0000" />
+        <View style={styles.infoText}>
+          <Text style={styles.infoName} numberOfLines={1}>{address}</Text>
           <Text style={styles.infoCoord}>
-            {location
-              ? `${location.latitude.toFixed(4)}° N, ${Math.abs(location.longitude).toFixed(4)}° W`
-              : '34.0522° N, 118.2437° W'}
+            {latitude.toFixed(4)}° N, {Math.abs(longitude).toFixed(4)}° W
           </Text>
           <View style={styles.liveRow}>
-            <Animated.View style={[styles.liveDot, { opacity: blinkAnim }]} />
+            <Animated.View style={[styles.liveDot, { opacity: blinkOpacity }]} />
             <Text style={styles.liveText}>Live location tracking active</Text>
           </View>
         </View>
@@ -83,130 +109,131 @@ export function SOSMapView({ location }: MapViewProps) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#fff',
     borderRadius: 12,
     overflow: 'hidden',
     borderWidth: 0.5,
-    borderColor: '#E5E5EA',
+    borderColor: '#E5E5E5',
   },
   mapArea: {
     backgroundColor: '#C8D8EC',
     height: 148,
     position: 'relative',
-  },
-  block: {
-    position: 'absolute',
-    backgroundColor: '#A8BFD4',
-    borderRadius: 3,
+    overflow: 'hidden',
   },
   roadH: {
     position: 'absolute',
     left: 0,
     right: 0,
     height: 20,
+    top: '44%',
     backgroundColor: 'rgba(255,255,255,0.5)',
-    top: '50%',
-    marginTop: -10,
   },
   roadV: {
     position: 'absolute',
     top: 0,
     bottom: 0,
     width: 20,
-    backgroundColor: 'rgba(255,255,255,0.5)',
     left: '38%',
+    backgroundColor: 'rgba(255,255,255,0.5)',
   },
-  yourLocation: {
+  block: {
     position: 'absolute',
-    top: '22%',
-    left: '18%',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#a8bfd4',
+    borderRadius: 3,
+  },
+  locationLabel: {
+    position: 'absolute',
+    top: '16%',
+    left: '12%',
+    backgroundColor: '#fff',
     borderRadius: 20,
     paddingVertical: 3,
     paddingHorizontal: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
     borderWidth: 0.5,
-    borderColor: '#E5E5EA',
+    borderColor: '#ddd',
   },
-  yourLocationText: {
+  locationLabelText: {
     fontSize: 10,
+    color: '#111',
     fontWeight: '500',
-    color: '#111111',
+    marginLeft: 3,
   },
   dot: {
     position: 'absolute',
+    borderRadius: 999,
+    borderWidth: 2,
+    borderColor: '#fff',
+  },
+  dotUser: {
     width: 12,
     height: 12,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: '#FFFFFF',
-  },
-  dotYou: {
     backgroundColor: '#FF6600',
-    top: '34%',
-    left: '22%',
+    top: '30%',
+    left: '18%',
   },
   dotEmergency: {
+    width: 14,
+    height: 14,
     backgroundColor: '#CC0000',
-    width: 13,
-    height: 13,
-    borderRadius: 6.5,
-    top: '50%',
-    left: '49%',
-    marginTop: -6.5,
-    marginLeft: -6.5,
+    top: '44%',
+    left: '47%',
+    zIndex: 2,
   },
-  dotPulse: {
+  // Pulse ring is a completely separate view — never mix with dotEmergency
+  pulseRing: {
     position: 'absolute',
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    backgroundColor: 'rgba(204,0,0,0.14)',
-    top: '50%',
-    left: '49%',
-    marginTop: -19,
-    marginLeft: -19,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: 'rgba(204,0,0,0.22)',
+    top: '44%',
+    left: '47%',
+    marginTop: -13,
+    marginLeft: -13,
+    zIndex: 1,
   },
   dotService: {
-    backgroundColor: '#1A6FC4',
     width: 11,
     height: 11,
-    borderRadius: 5.5,
-    top: '54%',
-    left: '65%',
+    backgroundColor: '#1A6FC4',
+    top: '52%',
+    left: '63%',
   },
-  infoRow: {
+  infoBar: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    padding: 9,
-    gap: 8,
+    padding: 10,
     borderTopWidth: 0.5,
-    borderTopColor: '#E5E5EA',
+    borderTopColor: '#E5E5E5',
   },
-  infoPin: {
-    fontSize: 16,
-    marginTop: 1,
+  infoText: {
+    flex: 1,
+    marginLeft: 8,
   },
   infoName: {
     fontSize: 12,
     fontWeight: '500',
-    color: '#111111',
+    color: '#111',
   },
   infoCoord: {
     fontSize: 10,
-    color: '#888888',
+    color: '#888',
     marginTop: 1,
   },
   liveRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
-    marginTop: 3,
+    marginTop: 4,
   },
   liveDot: {
     width: 6,
     height: 6,
     borderRadius: 3,
     backgroundColor: '#2E9A4E',
+    marginRight: 5,
   },
   liveText: {
     fontSize: 10,
