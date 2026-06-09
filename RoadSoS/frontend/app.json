@@ -4,18 +4,51 @@
     "slug": "roadsos",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
     "scheme": "roadsos",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#e53935"
     },
-    "assetBundlePatterns": ["**/*"],
-    "ios": { "supportsTablet": true },
-    "android": { "adaptiveIcon": { "foregroundImage": "./assets/images/adaptive-icon.png", "backgroundColor": "#ffffff" } },
-    "web": { "favicon": "./assets/images/favicon.png" },
-    "plugins": ["expo-router"]
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.roadsos.app",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "RoadSOS needs your location to send help to the right place.",
+        "NSLocationAlwaysUsageDescription": "RoadSOS needs background location for accident detection."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#e53935"
+      },
+      "package": "com.roadsos.app",
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "SEND_SMS",
+        "READ_CONTACTS",
+        "VIBRATE",
+        "RECEIVE_BOOT_COMPLETED"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-location",
+      [
+        "expo-notifications",
+        {
+          "color": "#e53935"
+        }
+      ],
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
   }
 }
