@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const EmergencyModel = require('../models/EmergencyModel');
+const EmergencyModel = require('../models/emergencyModel');
 const { getNearestFromList } = require('../utils/emergencyHelpers');
 const { success, error } = require('../utils/responseHandler');
 const hospitals = require('../../data/hospitals.json');

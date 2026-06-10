@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const UserModel = require('../models/UserModel');
-const SOSModel = require('../models/SOSModel');
+const UserModel = require('../models/userModel');
+const SOSModel = require('../models/sosModel');
 const { success, error } = require('../utils/responseHandler');
 
 router.get('/:id', async (req, res) => {

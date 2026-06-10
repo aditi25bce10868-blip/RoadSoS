@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const SOSModel = require('../models/SOSModel');
-const EmergencyModel = require('../models/EmergencyModel');
+const SOSModel = require('../models/sosModel');
+const EmergencyModel = require('../models/emergencyModel');
 const { getNearestFromList } = require('../utils/emergencyHelpers');
 const { getRoute } = require('../services/routingService');
 const { success, error } = require('../utils/responseHandler');
