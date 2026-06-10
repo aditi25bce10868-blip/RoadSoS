@@ -4,7 +4,7 @@ const SOSModel = require('../models/sosModel');
 const EmergencyModel = require('../models/emergencyModel');
 const { getNearestFromList } = require('../utils/emergencyHelpers');
 const { getRoute } = require('../services/routingService');
-const { success, error } = require('../utils/responseHandler');
+const { success, error } = require('../utils/responsehandler');
 const { validateLocation } = require('../utils/validators');
 
 router.post('/', async (req, res) => {

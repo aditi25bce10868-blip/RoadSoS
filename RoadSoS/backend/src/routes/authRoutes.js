@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const UserModel = require('../models/userModel');
-const { success, error } = require('../utils/responseHandler');
+const UserModel = require('../models/usermodel');
+const { success, error } = require('../utils/responsehandler');
 const { validatePhone } = require('../utils/validators');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET } = require('../config/env');

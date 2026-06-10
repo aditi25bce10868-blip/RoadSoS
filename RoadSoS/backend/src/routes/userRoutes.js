@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const UserModel = require('../models/userModel');
+const UserModel = require('../models/usermodel');
 const SOSModel = require('../models/sosModel');
-const { success, error } = require('../utils/responseHandler');
+const { success, error } = require('../utils/responsehandler');
 
 router.get('/:id', async (req, res) => {
   try {

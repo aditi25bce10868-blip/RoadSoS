@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const EmergencyModel = require('../models/emergencyModel');
 const { getNearestFromList } = require('../utils/emergencyHelpers');
-const { success, error } = require('../utils/responseHandler');
+const { success, error } = require('../utils/responsehandler');
 const hospitals = require('../../data/hospitals.json');
 const ambulances = require('../../data/ambulances.json');
 
