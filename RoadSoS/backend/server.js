@@ -4,7 +4,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 require('dotenv').config();
 
-const authRoutes = require('./src/routes/authRoutes');
+//const authRoutes = require('./src/routes/authRoutes');
 const sosRoutes = require('./src/routes/sosRoutes');
 const userRoutes = require('./src/routes/userRoutes');
 const emergencyRoutes = require('./src/routes/emergencyRoutes');
@@ -19,7 +19,7 @@ app.use(cors());
 app.use(express.json());
 app.set('io', io);
 
-app.use('/api/auth', authRoutes);
+//app.use('/api/auth', authRoutes);
 app.use('/api/sos', sosRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/emergency', emergencyRoutes);
