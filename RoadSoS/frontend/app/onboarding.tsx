@@ -6,16 +6,16 @@ import { triggerNotification } from '../store/notificationStore';
 
 export default function OnboardingScreen() {
   const handleEnable = async () => {
-   await  storage.setItem('detectionEnabled', 'true');
+    await storage.setItem('detectionEnabled', 'true');
     await storage.setItem('onboardingDone',   'true');
-    triggerNotification('detectionEnabled'); 
-    router.replace('/(tabs)/sos' );
+    triggerNotification('detection_enabled');
+    router.replace('/(tabs)/sos');
   };
 
-  const handleLater =async () => {
-   await storage.setItem('detectionEnabled', 'false');
-   await storage.setItem('onboardingDone',   'true');
-    router.replace('/(tabs)/sos' );
+  const handleLater = async () => {
+    await storage.setItem('detectionEnabled', 'false');
+    await storage.setItem('onboardingDone',   'true');
+    router.replace('/(tabs)/sos');
   };
 
   return (
@@ -26,7 +26,6 @@ export default function OnboardingScreen() {
         RoadSOS can detect possible accidents using motion and location sensors
         and automatically trigger emergency assistance if you are unable to respond.
       </Text>
-
       <View style={styles.featureBox}>
         <Text style={styles.featureItem}>✔ Works only during emergencies</Text>
         <Text style={styles.featureItem}>✔ Uses temporary tracking</Text>
@@ -34,11 +33,9 @@ export default function OnboardingScreen() {
         <Text style={styles.featureItem}>✔ 10 second countdown before SOS</Text>
         <Text style={styles.featureItem}>✔ Multi-sensor detection reduces false alarms</Text>
       </View>
-
       <TouchableOpacity style={styles.enableBtn} onPress={handleEnable}>
         <Text style={styles.enableBtnText}>🛡 Enable Protection</Text>
       </TouchableOpacity>
-
       <TouchableOpacity style={styles.laterBtn} onPress={handleLater}>
         <Text style={styles.laterBtnText}>Maybe Later</Text>
       </TouchableOpacity>
