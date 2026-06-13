@@ -1,0 +1,272 @@
+[
+  {
+    "id": "amb_delhi_1",
+    "region": "Delhi, India",
+    "lat": 28.5800,
+    "lng": 77.2150,
+    "status": "available",
+    "driver": "Rajesh Kumar",
+    "phone": "9811001001"
+  },
+  {
+    "id": "amb_delhi_2",
+    "region": "Delhi, India",
+    "lat": 28.6100,
+    "lng": 77.2000,
+    "status": "available",
+    "driver": "Sunil Sharma",
+    "phone": "9811001002"
+  },
+  {
+    "id": "amb_delhi_3",
+    "region": "Delhi, India",
+    "lat": 28.6300,
+    "lng": 77.2200,
+    "status": "busy",
+    "driver": "Amit Singh",
+    "phone": "9811001003"
+  },
+  {
+    "id": "amb_delhi_4",
+    "region": "Delhi, India",
+    "lat": 28.5500,
+    "lng": 77.1900,
+    "status": "available",
+    "driver": "Vikram Yadav",
+    "phone": "9811001004"
+  },
+  {
+    "id": "amb_delhi_5",
+    "region": "Delhi, India",
+    "lat": 28.6450,
+    "lng": 77.2400,
+    "status": "available",
+    "driver": "Deepak Verma",
+    "phone": "9811001005"
+  },
+  {
+    "id": "amb_delhi_6",
+    "region": "Delhi, India",
+    "lat": 28.5950,
+    "lng": 77.2300,
+    "status": "available",
+    "driver": "Manoj Tiwari",
+    "phone": "9811001006"
+  },
+  {
+    "id": "amb_delhi_7",
+    "region": "Delhi, India",
+    "lat": 28.6200,
+    "lng": 77.1800,
+    "status": "busy",
+    "driver": "Ravi Gupta",
+    "phone": "9811001007"
+  },
+  {
+    "id": "amb_delhi_8",
+    "region": "Delhi, India",
+    "lat": 28.5700,
+    "lng": 77.2500,
+    "status": "available",
+    "driver": "Sanjay Mishra",
+    "phone": "9811001008"
+  },
+  {
+    "id": "amb_delhi_9",
+    "region": "Delhi, India",
+    "lat": 28.6350,
+    "lng": 77.2100,
+    "status": "available",
+    "driver": "Ajay Pandey",
+    "phone": "9811001009"
+  },
+  {
+    "id": "amb_delhi_10",
+    "region": "Delhi, India",
+    "lat": 28.5850,
+    "lng": 77.1950,
+    "status": "available",
+    "driver": "Pradeep Chauhan",
+    "phone": "9811001010"
+  },
+  {
+    "id": "amb_yangon_1",
+    "region": "Yangon, Myanmar",
+    "lat": 16.8100,
+    "lng": 96.1550,
+    "status": "available",
+    "driver": "Aung Kyaw",
+    "phone": "09123456781"
+  },
+  {
+    "id": "amb_yangon_2",
+    "region": "Yangon, Myanmar",
+    "lat": 16.8300,
+    "lng": 96.1400,
+    "status": "available",
+    "driver": "Kyaw Zin",
+    "phone": "09123456782"
+  },
+  {
+    "id": "amb_yangon_3",
+    "region": "Yangon, Myanmar",
+    "lat": 16.7900,
+    "lng": 96.1600,
+    "status": "busy",
+    "driver": "Myo Win",
+    "phone": "09123456783"
+  },
+  {
+    "id": "amb_yangon_4",
+    "region": "Yangon, Myanmar",
+    "lat": 16.8500,
+    "lng": 96.1700,
+    "status": "available",
+    "driver": "Htun Myint",
+    "phone": "09123456784"
+  },
+  {
+    "id": "amb_yangon_5",
+    "region": "Yangon, Myanmar",
+    "lat": 16.8200,
+    "lng": 96.1300,
+    "status": "available",
+    "driver": "Zaw Lin",
+    "phone": "09123456785"
+  },
+  {
+    "id": "amb_yangon_6",
+    "region": "Yangon, Myanmar",
+    "lat": 16.7800,
+    "lng": 96.1450,
+    "status": "available",
+    "driver": "Naing Oo",
+    "phone": "09123456786"
+  },
+  {
+    "id": "amb_yangon_7",
+    "region": "Yangon, Myanmar",
+    "lat": 16.8400,
+    "lng": 96.1600,
+    "status": "busy",
+    "driver": "Thura Aung",
+    "phone": "09123456787"
+  },
+  {
+    "id": "amb_yangon_8",
+    "region": "Yangon, Myanmar",
+    "lat": 16.8000,
+    "lng": 96.1700,
+    "status": "available",
+    "driver": "Min Thu",
+    "phone": "09123456788"
+  },
+  {
+    "id": "amb_yangon_9",
+    "region": "Yangon, Myanmar",
+    "lat": 16.8600,
+    "lng": 96.1500,
+    "status": "available",
+    "driver": "Ye Myint",
+    "phone": "09123456789"
+  },
+  {
+    "id": "amb_yangon_10",
+    "region": "Yangon, Myanmar",
+    "lat": 16.8150,
+    "lng": 96.1250,
+    "status": "available",
+    "driver": "Kaung Htet",
+    "phone": "09123456790"
+  },
+  {
+    "id": "amb_dhaka_1",
+    "region": "Dhaka, Bangladesh",
+    "lat": 23.7400,
+    "lng": 90.3900,
+    "status": "available",
+    "driver": "Mohammad Rahim",
+    "phone": "01711000001"
+  },
+  {
+    "id": "amb_dhaka_2",
+    "region": "Dhaka, Bangladesh",
+    "lat": 23.7600,
+    "lng": 90.4000,
+    "status": "available",
+    "driver": "Abdul Karim",
+    "phone": "01711000002"
+  },
+  {
+    "id": "amb_dhaka_3",
+    "region": "Dhaka, Bangladesh",
+    "lat": 23.7200,
+    "lng": 90.4100,
+    "status": "busy",
+    "driver": "Md Hasan",
+    "phone": "01711000003"
+  },
+  {
+    "id": "amb_dhaka_4",
+    "region": "Dhaka, Bangladesh",
+    "lat": 23.7800,
+    "lng": 90.3700,
+    "status": "available",
+    "driver": "Faruk Ahmed",
+    "phone": "01711000004"
+  },
+  {
+    "id": "amb_dhaka_5",
+    "region": "Dhaka, Bangladesh",
+    "lat": 23.8000,
+    "lng": 90.4050,
+    "status": "available",
+    "driver": "Jamal Uddin",
+    "phone": "01711000005"
+  },
+  {
+    "id": "amb_dhaka_6",
+    "region": "Dhaka, Bangladesh",
+    "lat": 23.7300,
+    "lng": 90.3800,
+    "status": "available",
+    "driver": "Rezaul Islam",
+    "phone": "01711000006"
+  },
+  {
+    "id": "amb_dhaka_7",
+    "region": "Dhaka, Bangladesh",
+    "lat": 23.7700,
+    "lng": 90.4200,
+    "status": "busy",
+    "driver": "Nurul Haque",
+    "phone": "01711000007"
+  },
+  {
+    "id": "amb_dhaka_8",
+    "region": "Dhaka, Bangladesh",
+    "lat": 23.7500,
+    "lng": 90.3950,
+    "status": "available",
+    "driver": "Shahidul Alam",
+    "phone": "01711000008"
+  },
+  {
+    "id": "amb_dhaka_9",
+    "region": "Dhaka, Bangladesh",
+    "lat": 23.8100,
+    "lng": 90.4150,
+    "status": "available",
+    "driver": "Mokhlesur Rahman",
+    "phone": "01711000009"
+  },
+  {
+    "id": "amb_dhaka_10",
+    "region": "Dhaka, Bangladesh",
+    "lat": 23.7650,
+    "lng": 90.3850,
+    "status": "available",
+    "driver": "Habibur Rahman",
+    "phone": "01711000010"
+  }
+]
