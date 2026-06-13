@@ -24,8 +24,8 @@ export interface EmergencyContact {
 }
 
 export interface SOSLocation {
-  latitude: number;
-  longitude: number;
+  lat: number;
+  lng: number;
   address: string;
   isLive: boolean;
 }
@@ -39,4 +39,5 @@ export interface SOS {
   emergencyContacts: EmergencyContact[];
   triggeredAt: Date | null;
   etaMinutes: number | null;
+  sessionId: string | null;
 }
