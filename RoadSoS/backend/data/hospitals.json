@@ -1,0 +1,202 @@
+[
+  {
+    "id": "hospital_delhi_1",
+    "name": "All India Institute of Medical Sciences (AIIMS)",
+    "region": "Delhi, India",
+    "lat": 28.5672,
+    "lng": 77.2100,
+    "trauma_care": true,
+    "specialization": "multispecialty",
+    "phone": "01126588500"
+  },
+  {
+    "id": "hospital_delhi_2",
+    "name": "Safdarjung Hospital",
+    "region": "Delhi, India",
+    "lat": 28.5685,
+    "lng": 77.2063,
+    "trauma_care": true,
+    "specialization": "general",
+    "phone": "01126165060"
+  },
+  {
+    "id": "hospital_delhi_3",
+    "name": "Ram Manohar Lohia Hospital",
+    "region": "Delhi, India",
+    "lat": 28.6253,
+    "lng": 77.2090,
+    "trauma_care": true,
+    "specialization": "general",
+    "phone": "01123404321"
+  },
+  {
+    "id": "hospital_delhi_4",
+    "name": "Sir Ganga Ram Hospital",
+    "region": "Delhi, India",
+    "lat": 28.6431,
+    "lng": 77.1903,
+    "trauma_care": true,
+    "specialization": "multispecialty",
+    "phone": "01125750000"
+  },
+  {
+    "id": "hospital_delhi_5",
+    "name": "Lok Nayak Jai Prakash Hospital",
+    "region": "Delhi, India",
+    "lat": 28.6405,
+    "lng": 77.2350,
+    "trauma_care": true,
+    "specialization": "general",
+    "phone": "01123232400"
+  },
+  {
+    "id": "hospital_delhi_6",
+    "name": "Apollo Hospital Sarita Vihar",
+    "region": "Delhi, India",
+    "lat": 28.5310,
+    "lng": 77.2890,
+    "trauma_care": true,
+    "specialization": "multispecialty",
+    "phone": "01129871011"
+  },
+  {
+    "id": "hospital_delhi_7",
+    "name": "Max Super Speciality Hospital Saket",
+    "region": "Delhi, India",
+    "lat": 28.5245,
+    "lng": 77.2066,
+    "trauma_care": true,
+    "specialization": "multispecialty",
+    "phone": "01126515050"
+  },
+  {
+    "id": "hospital_yangon_1",
+    "name": "Yangon General Hospital",
+    "region": "Yangon, Myanmar",
+    "lat": 16.7967,
+    "lng": 96.1497,
+    "trauma_care": true,
+    "specialization": "general",
+    "phone": "0951380"
+  },
+  {
+    "id": "hospital_yangon_2",
+    "name": "North Okkalapa General Hospital",
+    "region": "Yangon, Myanmar",
+    "lat": 16.8700,
+    "lng": 96.1800,
+    "trauma_care": true,
+    "specialization": "general",
+    "phone": "0954530"
+  },
+  {
+    "id": "hospital_yangon_3",
+    "name": "South Okkalapa Women and Children Hospital",
+    "region": "Yangon, Myanmar",
+    "lat": 16.8400,
+    "lng": 96.1900,
+    "trauma_care": false,
+    "specialization": "maternity",
+    "phone": "0954531"
+  },
+  {
+    "id": "hospital_yangon_4",
+    "name": "Thingangyun Sanpya Hospital",
+    "region": "Yangon, Myanmar",
+    "lat": 16.8300,
+    "lng": 96.1700,
+    "trauma_care": true,
+    "specialization": "general",
+    "phone": "0954532"
+  },
+  {
+    "id": "hospital_yangon_5",
+    "name": "Insein General Hospital",
+    "region": "Yangon, Myanmar",
+    "lat": 16.9200,
+    "lng": 96.0900,
+    "trauma_care": true,
+    "specialization": "general",
+    "phone": "0954533"
+  },
+  {
+    "id": "hospital_yangon_6",
+    "name": "Asia Royal General Hospital",
+    "region": "Yangon, Myanmar",
+    "lat": 16.8050,
+    "lng": 96.1350,
+    "trauma_care": true,
+    "specialization": "multispecialty",
+    "phone": "0952300333"
+  },
+  {
+    "id": "hospital_dhaka_1",
+    "name": "Dhaka Medical College Hospital",
+    "region": "Dhaka, Bangladesh",
+    "lat": 23.7261,
+    "lng": 90.3966,
+    "trauma_care": true,
+    "specialization": "general",
+    "phone": "02 55165001"
+  },
+  {
+    "id": "hospital_dhaka_2",
+    "name": "Sir Salimullah Medical College & Mitford Hospital",
+    "region": "Dhaka, Bangladesh",
+    "lat": 23.7104,
+    "lng": 90.4074,
+    "trauma_care": true,
+    "specialization": "general",
+    "phone": "02 7319001"
+  },
+  {
+    "id": "hospital_dhaka_3",
+    "name": "Shaheed Suhrawardy Medical College Hospital",
+    "region": "Dhaka, Bangladesh",
+    "lat": 23.7749,
+    "lng": 90.3668,
+    "trauma_care": true,
+    "specialization": "general",
+    "phone": "02 8116190"
+  },
+  {
+    "id": "hospital_dhaka_4",
+    "name": "Square Hospital Ltd",
+    "region": "Dhaka, Bangladesh",
+    "lat": 23.7516,
+    "lng": 90.3817,
+    "trauma_care": true,
+    "specialization": "multispecialty",
+    "phone": "02 8159457"
+  },
+  {
+    "id": "hospital_dhaka_5",
+    "name": "United Hospital Limited",
+    "region": "Dhaka, Bangladesh",
+    "lat": 23.7963,
+    "lng": 90.4044,
+    "trauma_care": true,
+    "specialization": "multispecialty",
+    "phone": "02 8836000"
+  },
+  {
+    "id": "hospital_dhaka_6",
+    "name": "Apollo Hospitals Dhaka",
+    "region": "Dhaka, Bangladesh",
+    "lat": 23.8103,
+    "lng": 90.4125,
+    "trauma_care": true,
+    "specialization": "multispecialty",
+    "phone": "02 8401661"
+  },
+  {
+    "id": "hospital_dhaka_7",
+    "name": "National Institute of Traumatology and Orthopaedic Rehabilitation",
+    "region": "Dhaka, Bangladesh",
+    "lat": 23.7785,
+    "lng": 90.3601,
+    "trauma_care": true,
+    "specialization": "trauma",
+    "phone": "02 9136413"
+  }
+]
