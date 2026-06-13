@@ -8,16 +8,11 @@ import { useNotification } from '../hooks/useNotification';
 import { useNotificationStore } from '../store/notificationStore';
 
 export default function RootLayout() {
-  const { banner, hide, notify } = useNotification();
-  const { pendingType, clearNotification } = useNotificationStore();
-  const [ready, setReady] = useState(false);  // ← ADD
+  const { banner, hide } = useNotification();
 
-  useEffect(() => {
-    if (!pendingType) return;
-    const key = pendingType as keyof typeof notify;
-    if (notify[key]) notify[key]();
-    clearNotification();
-  }, [pendingType]);
+  
+  const [ready, setReady] = useState(false);
+  
 
   useEffect(() => {
     const init = async () => {
