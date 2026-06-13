@@ -1,4 +1,5 @@
 import React from 'react';
+import {useEffect} from 'react'
 import {
   View,
   Text,
@@ -6,6 +7,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
+  BackHandler,
+  Alert
 } from 'react-native';
 import { router } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
@@ -17,14 +20,58 @@ import { NotificationBanner } from '../../components/tracking/NotificationBanner
 import { RespondingServiceCard } from '../../components/tracking/RespondingServiceCard';
 import { EmergencyContactCard } from '../../components/tracking/EmergencyContactCard';
 import { SharedLocationCard } from '../../components/tracking/SharedLocationCard';
+import { triggerNotification } from '../../store/notificationStore';
+import { API_BASE_URL } from '../../constants/api';
 
 export default function TrackingScreen() {
   const { sos, reset } = useSOSStore();
+  const sessionId = sos.sessionId;
+
 
   const handleCancel = () => {
-    reset();
-    router.replace('/');
+  if (sessionId) {
+    fetch(`${API_BASE_URL}/tracking/${sessionId}/stop`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reason: 'resolved' }),
+    }).catch(err => console.warn('Stop failed:', err));
+  }
+  triggerNotification('sos_resolved');
+  setTimeout(() => triggerNotification('tracking_ended'), 3500);
+  reset();
+  router.replace('/');
+};
+
+  useEffect(() => {
+  const backAction = () => {
+    Alert.alert(
+      'Stop Tracking?',
+      'Emergency services will no longer receive your location.',
+      [
+        { text: 'Stay', style: 'cancel' },
+        {
+          text: 'Stop Tracking',
+          style: 'destructive',
+          onPress: () => {
+   // call stop API with reason manual
+    fetch(`${API_BASE_URL}/tracking/${sessionId}/stop`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ reason: 'manual' }),
+   }).catch(err => console.warn('Stop failed:', err));
+  
+    triggerNotification('tracking_ended');
+   reset();
+  router.replace('/');
+},
+        },
+      ]
+    );
+    return true; // prevents default back
   };
+  const backHandler = BackHandler.addEventListener('hardwareBackPress', backAction);
+  return () => backHandler.remove();
+}, []);
 
   return (
     <SafeAreaView style={styles.safe}>
