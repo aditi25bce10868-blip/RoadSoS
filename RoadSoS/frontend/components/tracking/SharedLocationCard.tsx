@@ -8,13 +8,15 @@ interface SharedLocationCardProps {
 }
 
 export function SharedLocationCard({ location }: SharedLocationCardProps) {
+  const { lat, lng } = location as any;
+
   return (
     <View style={styles.card}>
       <Ionicons name="location" size={17} color="#CC0000" style={styles.icon} />
       <View style={styles.content}>
         <Text style={styles.name}>{location.address}</Text>
         <Text style={styles.coord}>
-          {location.latitude.toFixed(4)}° N, {Math.abs(location.longitude).toFixed(4)}° W
+          {lat.toFixed(4)}° N, {Math.abs(lng).toFixed(4)}° W
         </Text>
         <View style={styles.liveRow}>
           <View style={styles.liveDot} />
