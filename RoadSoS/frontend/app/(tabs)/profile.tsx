@@ -8,6 +8,7 @@ import { router } from 'expo-router';
 import Card from '../../components/ui/Card';
 import SettingToggle from '../../components/ui/SettingToggle';
 import Colors from '../../constants/color';
+import { triggerNotification } from '../../store/notificationStore';
 
 const AVATARS = ['😊', '👤', '⭐', '⚡', '🌸', '🔥', '💎', '🚗'];
 const AVATAR_BG = ['#FF8C42', '#5B6DD6', '#2ECC71', '#9B59B6', '#E91E8C', '#FF9800', '#00BCD4', '#E53935'];
@@ -369,7 +370,7 @@ export default function ProfileScreen() {
             <SettingToggle
               icon="radio-outline" iconBg="rgba(240,45,75,0.1)" iconColor={Colors.primary}
               label="Auto SOS Alerts" sub="Automatic emergency detection"
-              value={autoSOS} onChange={setAutoSOS} trackOn={Colors.primary}
+              value={autoSOS} onChange={(val) => { setAutoSOS(val); triggerNotification(val ? 'detection_enabled' : 'detection_disabled');}} trackOn={Colors.primary}
             />
             <SettingToggle
               icon="navigate-outline" iconBg="rgba(66,133,244,0.1)" iconColor="#4285F4"
