@@ -28,8 +28,12 @@ app.get('/track/:sessionId', (req, res) => {
 });
 
 // API Routes
+app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/sos',      require('./routes/sosRoutes'));
+app.use('/api/emergency', require('./routes/emergencyRoutes'));
+app.use('/api/user', require('./routes/userRoutes'));
 app.use('/api/tracking', require('./routes/trackingRoutes'));
+
 
 // 404
 app.use((req, res) => {
