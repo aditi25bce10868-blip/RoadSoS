@@ -11,12 +11,12 @@ export const API_ENDPOINTS = {
   SOS:          `${API_BASE_URL}/api/sos`,            // friend's generic SOS endpoint
 
   // ── User ──────────────────────────────────────────────
-  PROFILE:      `${API_BASE_URL}/user/profile`,
+  PROFILE:      `${API_BASE_URL}/api/user/profile`,
   USER_BY_ID:   (id: string) => `${API_BASE_URL}/api/user/${id}`,
   SOS_HISTORY:  (id: string) => `${API_BASE_URL}/api/user/${id}/sos-history`,
 
   // ── Emergency services ─────────────────────────────────
-  NEARBY:    `${API_BASE_URL}/emergency/nearby`, // existing
+  NEARBY:    `${API_BASE_URL}/api/emergency/nearby`, // existing
   HOSPITALS_NEAREST: (lat: number, lng: number) =>
     `${API_BASE_URL}/api/emergency/hospitals/nearest?lat=${lat}&lng=${lng}`,
   AMBULANCES_NEAREST: (lat: number, lng: number) =>
