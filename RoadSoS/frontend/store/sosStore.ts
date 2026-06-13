@@ -11,11 +11,13 @@ interface SOSStore {
   sos: SOS;
   setStatus: (status: SOSStatus) => void;
   setWhoNeedsHelp: (who: WhoNeedsHelp) => void;
+  setLocation: (location: SOS['location']) => void;
   triggerSOS: () => void;
   cancelSOS: () => void;
   setRespondingServices: (services: RespondingService[]) => void;
   setEmergencyContacts: (contacts: EmergencyContact[]) => void;
   setETA: (minutes: number) => void;
+  setSessionId: (sessionId: string) => void;
   reset: () => void;
 }
 
@@ -61,6 +63,7 @@ const MOCK_EMERGENCY_CONTACTS: EmergencyContact[] = [
 
 const INITIAL_SOS: SOS = {
   id: '',
+  sessionId: null,
   status: 'idle',
   whoNeedsHelp: null,
   location: null,
@@ -79,6 +82,9 @@ export const useSOSStore = create<SOSStore>((set) => ({
   setWhoNeedsHelp: (whoNeedsHelp) =>
     set((state) => ({ sos: { ...state.sos, whoNeedsHelp } })),
 
+  setLocation: (location) =>
+  set((state) => ({ sos: { ...state.sos, location } })),
+
   triggerSOS: () =>
     set((state) => ({
       sos: {
@@ -89,12 +95,8 @@ export const useSOSStore = create<SOSStore>((set) => ({
         respondingServices: MOCK_RESPONDING_SERVICES,
         emergencyContacts: MOCK_EMERGENCY_CONTACTS,
         etaMinutes: 8,
-        location: {
-          latitude: 34.0522,
-          longitude: -118.2437,
-          address: 'Downtown, Main Street, Los Angeles',
-          isLive: true,
-        },
+        
+        
       },
     })),
 
@@ -111,6 +113,9 @@ export const useSOSStore = create<SOSStore>((set) => ({
 
   setETA: (etaMinutes) =>
     set((state) => ({ sos: { ...state.sos, etaMinutes } })),
+
+  setSessionId: (sessionId) =>
+  set((state) => ({ sos: { ...state.sos, sessionId } })),
 
   reset: () => set({ sos: INITIAL_SOS }),
 }));
