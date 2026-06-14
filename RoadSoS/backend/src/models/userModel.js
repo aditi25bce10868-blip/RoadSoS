@@ -1,35 +1,43 @@
-const express = require('express');
-const router = express.Router();
-const UserModel = require('../models/userModel');
-const SOSModel = require('../models/sosModel');
-const { success, error } = require('../utils/responsehandler');
+const { db } = require('../config/firebaseAdmin');
 
-router.get('/:id', async (req, res) => {
-  try {
-    const user = await UserModel.findById(req.params.id);
-    if (!user) return error(res, 'User not found', 404);
-    return success(res, user);
-  } catch (err) {
-    return error(res, err.message);
-  }
-});
+const usersCollection = db.collection('users');
 
-router.get('/:id/sos-history', async (req, res) => {
-  try {
-    const history = await SOSModel.findByUser(req.params.id);
-    return success(res, history);
-  } catch (err) {
-    return error(res, err.message);
-  }
-});
+const UserModel = {
+  async create({ name, phone, email, blood_group, emergency_contacts }) {
+    const docRef = usersCollection.doc();
+    const user = {
+      id: docRef.id,
+      name,
+      phone,
+      email: email || '',
+      blood_group: blood_group || '',
+      emergency_contacts: emergency_contacts || [],
+      createdAt: new Date().toISOString(),
+    };
+    await docRef.set(user);
+    return user;
+  },
 
-router.put('/:id', async (req, res) => {
-  try {
-    const updated = await UserModel.update(req.params.id, req.body);
-    return success(res, updated, 'User updated');
-  } catch (err) {
-    return error(res, err.message);
-  }
-});
+  async findByPhone(phone) {
+    const snapshot = await usersCollection
+      .where('phone', '==', phone)
+      .limit(1)
+      .get();
+    if (snapshot.empty) return null;
+    return snapshot.docs[0].data();
+  },
 
-module.exports = router;
+  async findById(id) {
+    const doc = await usersCollection.doc(id).get();
+    if (!doc.exists) return null;
+    return doc.data();
+  },
+
+  async update(id, data) {
+    await usersCollection.doc(id).update(data);
+    const updated = await usersCollection.doc(id).get();
+    return updated.data();
+  },
+};
+
+module.exports = UserModel;
