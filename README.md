@@ -15,7 +15,11 @@ Sanjeevani is a real-time emergency response mobile application built for road a
 - [Project Structure](#project-structure)
 - [Getting Started](#getting-started)
 - [Setting Up Android Studio](#setting-up-android-studio)
+- [Firebase Setup & google-services.json](#firebase-setup--google-servicesjson)
+- [Twilio Setup](#twilio-setup)
+- [ORS (OpenRouteService) API Key Setup](#ors-openrouteservice-api-key-setup)
 - [Environment Variables](#environment-variables)
+- [Database Design](#database-design)
 - [API Reference](#api-reference)
 - [Auto Accident Detection](#auto-accident-detection)
 - [Live Tracking](#live-tracking)
@@ -172,8 +176,9 @@ Phone vibrates strongly
 | Node.js + Express | REST API server |
 | Firebase Admin SDK | Realtime DB + Firestore |
 | Firebase Realtime Database | Live tracking session data |
-| Firebase Firestore | Session summaries (permanent) |
+| Firebase Firestore | Session summaries, users, hospitals, ambulances, SOS records |
 | Twilio | SMS sending |
+| OpenRouteService (ORS) | Route geometry/directions for ambulance dispatch |
 | Render | Cloud hosting |
 
 ---
@@ -181,87 +186,89 @@ Phone vibrates strongly
 ## 📁 Project Structure
 
 ```
-RoadSOS/
-├── frontend/                          # React Native app
-│   ├── app/
-│   │   ├── (auth)/
-│   │   │   ├── _layout.tsx
-│   │   │   ├── login.tsx
-│   │   │   └── signup.tsx
-│   │   ├── (tabs)/
-│   │   │   ├── _layout.tsx
-│   │   │   ├── sos.tsx                # 🚨 Main SOS screen
-│   │   │   ├── contacts.tsx
-│   │   │   ├── services.tsx           # Nearby emergency services
-│   │   │   ├── tracking.tsx           # Live tracking status
-│   │   │   └── settings.tsx
-│   │   ├── emergency/
-│   │   │   ├── whoNeedsHelp.tsx
-│   │   │   ├── confirmation.tsx
-│   │   │   └── details.tsx
-│   │   ├── onboarding.tsx
-│   │   └── _layout.tsx
-│   │
-│   ├── components/
-│   │   ├── sos/
-│   │   │   ├── SOSButton.tsx
-│   │   │   ├── CountdownTimer.tsx
-│   │   │   ├── AccidentAlertModal.tsx
-│   │   │   ├── AlertStatus.tsx
-│   │   │   └── SimulatorPanel.tsx
-│   │   ├── ui/
-│   │   │   ├── BellNotification.tsx
-│   │   │   ├── NotificationBanner.tsx
-│   │   │   ├── Card.tsx
-│   │   │   ├── Input.tsx
-│   │   │   └── Button.tsx
-│   │   └── layout/
-│   │       ├── Header.tsx
-│   │       └── LoginBackground.tsx
-│   │
-│   ├── hooks/
-│   │   ├── useSoS.ts
-│   │   ├── useTracking.ts
-│   │   ├── useAccidentDetection.ts
-│   │   ├── useLocation.ts
-│   │   ├── useNotification.ts
-│   │   └── useAuth.ts
-│   │
-│   ├── services/
-│   │   └── location/
-│   │       ├── gpsService.ts
-│   │       └── motionService.ts
-│   │
-│   ├── store/
-│   │   ├── sosStore.ts
-│   │   └── notificationStore.ts
-│   │
-│   └── constants/
-│       ├── api.ts                     # API_BASE_URL → Render
-│       ├── color.ts
-│       └── strings.ts
+RoadSOS/                            # GitHub Repository Root
 │
-├── backend/                           # Node.js API
-│   ├── src/
-│   │   ├── controllers/
-│   │   │   ├── sosController.js
-│   │   │   └── trackingController.js
-│   │   ├── services/
-│   │   │   ├── smsService.js
-│   │   │   ├── callService.js
-│   │   │   └── trackingService.js
-│   │   ├── config/
-│   │   │   ├── firebaseAdmin.js
-│   │   │   └── emergencyNumbers.js    # Numbers per country (IN/BD/MM)
-│   │   └── routes/
-│   │       ├── sosRoutes.js
-│   │       └── trackingRoutes.js
-│   ├── public/
-│   │   └── track.html                 # Browser tracking page
-│   ├── server.js
-│   └── .env
+├── README.md
 │
-└── README.md
+└── RoadSOS/                        # Actual Project Folder
+    │
+    ├── frontend/
+    │   │
+    │   ├── app/
+    │   │   ├── (auth)/
+    │   │   │   ├── _layout.tsx
+    │   │   │   ├── login.tsx
+    │   │   │   └── signup.tsx
+    │   │   │
+    │   │   ├── (tabs)/
+    │   │   │   ├── _layout.tsx
+    │   │   │   ├── index.tsx
+    │   │   │   ├── sos.tsx
+    │   │   │   ├── contacts.tsx
+    │   │   │   ├── services.tsx
+    │   │   │   ├── tracking.tsx
+    │   │   │   └── settings.tsx
+    │   │   │
+    │   │   ├── emergency/
+    │   │   │   ├── _layout.tsx
+    │   │   │   ├── whoNeedsHelp.tsx
+    │   │   │   ├── confirmation.tsx
+    │   │   │   ├── confirmationOther.tsx
+    │   │   │   ├── somebodyElse.tsx
+    │   │   │   └── countdown.tsx
+    │   │   │
+    │   │   ├── profile/
+    │   │   │   └── index.tsx
+    │   │   │
+    │   │   ├── onboarding.tsx
+    │   │   ├── index.tsx
+    │   │   ├── +not-found.tsx
+    │   │   └── _layout.tsx
+    │   │
+    │   ├── components/
+    │   │   ├── auth/
+    │   │   ├── layout/
+    │   │   ├── maps/
+    │   │   ├── sos/
+    │   │   ├── tracking/
+    │   │   └── ui/
+    │   │
+    │   ├── hooks/
+    │   ├── services/
+    │   ├── store/
+    │   ├── constants/
+    │   ├── types/
+    │   │
+    │   ├── .gitignore
+    │   ├── app.json
+    │   ├── babel.config.js
+    │   ├── eas.json
+    │   ├── metro.config.js
+    │   ├── package.json
+    │   ├── tailwind.config.js
+    │   └── tsconfig.json
+    │
+    ├── backend/
+    │   │
+    │   ├── public/
+    │   │   └── track.html
+    │   │
+    │   ├── src/
+    │   │   ├── app.js
+    │   │   ├── config/
+    │   │   ├── controllers/
+    │   │   ├── middleware/
+    │   │   ├── models/
+    │   │   ├── routes/
+    │   │   ├── services/
+    │   │   └── utils/
+    │   │
+    │   ├── server.js
+    │   ├── .env
+    │   ├── package.json
+    │   └── README.md
+    │
+    └── docs/
 ```
 
 ---
@@ -276,6 +283,7 @@ Before you begin, you need to install these tools. If you have never done this b
 - Android Studio
 - A Firebase project (free)
 - A Twilio account (free trial)
+- An OpenRouteService account (free)
 - Git
 
 ---
@@ -414,6 +422,8 @@ Open `constants/api.ts` and set the backend URL:
 export const API_BASE_URL = 'https://roadsos-backend.onrender.com';
 ```
 
+Place your `google-services.json` file in the `frontend/` root — see [Firebase Setup & google-services.json](#firebase-setup--google-servicesjson) for how to generate it.
+
 ### 4. Build and run the app
 
 Make sure your emulator is running (the virtual phone is visible on screen) or your real phone is connected.
@@ -454,7 +464,165 @@ APK- https://drive.usercontent.google.com/download?id=1rV5xYiOX-HzGZOKgXLrCTJdHY
 
 > Ensure to put your test number in .env and uncomment one of services in emergencyNumbers.js.
 
-----
+---
+
+## 🔐 Firebase Integration
+
+### Authentication
+- Email/password login via Firebase Auth
+- Phone number country code detected at signup(future)
+- System automatically configures emergency numbers for that country(future)
+
+
+### Realtime Database
+-Stores live tracking data — location updates in real time.
+-Data get deleted after 24 hours(privacy)
+
+### Firestore
+Stores permanent session summaries — only saved once when session truly ends, not on every phase change. Also stores `users`, `hospitals`, `ambulances`, and `sos` records — see [Database Design](#database-design).
+
+### Firebase Setup (Step by Step)
+
+1. Go to **https://console.firebase.google.com**
+2. Click **Create a project** → give it a name → click Continue
+3. Disable Google Analytics (not needed) → click **Create project**
+4. In left sidebar click **Authentication** → **Get started** → enable **Email/Password**
+5. In left sidebar click **Realtime Database** → **Create database** → choose your region → **Start in test mode**
+6. In left sidebar click **Firestore Database** → **Create database** → **Start in test mode**
+7. Click the ⚙️ gear icon → **Project settings** → **Service accounts** tab
+8. Click **Generate new private key** → download the JSON file
+9. Copy the values from that JSON file into your `backend/.env`
+
+> For the Android app's own Firebase config file (`google-services.json`), see [Firebase Setup & google-services.json](#firebase-setup--google-servicesjson) just below.
+
+---
+
+
+## 🔐 Firebase Setup & google-services.json
+
+The app uses Firebase for Authentication, Realtime Database, and Firestore — both the backend (via Admin SDK + service account key) and the frontend (via `google-services.json`) need their own Firebase credential files.
+
+### Why google-services.json is needed
+
+`google-services.json` configures the Android app to connect to your Firebase project (Auth, push notifications, analytics if enabled). It contains your Firebase project's client-side API keys and identifiers.
+
+> ⚠️ **Should you include it in your zip / public repo?**
+> It is technically embedded into the compiled APK regardless (so it's not a "secret" the way a service account key is), but as good practice **do not commit it to a public GitHub repo**. Instead, follow the steps below so each developer/team generates their own from their own Firebase project. If sharing a private zip with teammates only, including it is acceptable.
+
+### How to generate google-services.json
+
+1. Go to **https://console.firebase.google.com** and open your project (the same one used for backend `.env` setup — see [Firebase Integration](#firebase-integration))
+2. Click the ⚙️ gear icon → **Project settings**
+3. Scroll down to **Your apps** → click **Add app** → choose the **Android** icon
+4. Fill in:
+   - **Android package name** — must exactly match the `package` value in `frontend/app.json` (under `android.package`)
+   - App nickname (optional)
+   - Debug signing certificate SHA-1 (optional for basic Auth — required only if using Google Sign-In)
+5. Click **Register app**
+6. Click **Download google-services.json**
+7. Place the downloaded file at `frontend/google-services.json` (project root of the frontend folder)
+8. Click **Next** → **Next** → **Continue to console** (you can skip the SDK setup code snippets — Expo handles this automatically)
+
+### Confirm it's wired up correctly
+
+In `frontend/app.json`, confirm there's an entry like:
+```json
+{
+  "expo": {
+    "android": {
+      "package": "com.yourcompany.roadsos",
+      "googleServicesFile": "./google-services.json"
+    }
+  }
+}
+```
+
+If this file is missing when you run `npx expo run:android` or `eas build`, the build will either fail or Firebase Auth won't initialize correctly on Android.
+
+---
+
+## 📨 Twilio Setup
+
+Twilio is used to send SMS alerts to emergency contacts and nearby emergency services.
+
+### Step 1 — Create a Twilio Account
+
+1. Go to **https://www.twilio.com/try-twilio**
+2. Sign up with your email (free trial — no credit card required to start)
+3. Verify your email and phone number when prompted
+
+### Step 2 — Get a Twilio Phone Number
+
+1. From the Twilio Console dashboard, go to **Phone Numbers → Manage → Buy a number** (or use the trial number automatically assigned)
+2. On a trial account, Twilio gives you one free phone number — this is the number SMS will be sent **from**
+3. Copy this number — you'll need it for `TWILIO_PHONE_NUMBER`
+
+### Step 3 — Get Account SID and Auth Token
+
+1. On the Twilio Console **Dashboard** (homepage after login), find the **Account Info** section
+2. Copy:
+   - **Account SID** → this is `TWILIO_ACCOUNT_SID`
+   - **Auth Token** → click "show" to reveal it → this is `TWILIO_AUTH_TOKEN`
+
+### Step 4 — Verify Recipient Numbers (Trial Account Limitation)
+
+Trial Twilio accounts can **only send SMS to verified phone numbers**.
+
+1. Go to **Phone Numbers → Manage → Verified Caller IDs**
+2. Click **Add a new Caller ID**
+3. Enter the phone number you want to receive test SOS messages on (e.g. your own number)
+4. Twilio sends a verification code via call or SMS — enter it to verify
+5. Use this verified number as `TEST_EMERGENCY_NUMBER` in your `.env`
+
+> ⚠️ For production (real users, real emergency contacts), you need a **paid Twilio account** to send SMS to any number without pre-verification, and in India, **DLT registration** is required for SMS delivery (see [Future Roadmap](#future-roadmap)).
+
+### Step 5 — Store Credentials
+
+Add to `backend/.env`:
+```env
+TWILIO_ACCOUNT_SID=ACxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+TWILIO_AUTH_TOKEN=your_auth_token_here
+TWILIO_PHONE_NUMBER=+1xxxxxxxxxx
+TEST_EMERGENCY_NUMBER=+91xxxxxxxxxx
+```
+
+If deploying to Render, also add these same variables under **Render Dashboard → Environment Variables**.
+
+---
+
+## 🗺️ ORS (OpenRouteService) API Key Setup
+
+### Step 1 — Why ORS Was Considered
+
+Initially planned for use in `routingService.js` for route calculation between user location and dispatched ambulance/hospital, as an alternative/complement to OSRM.
+
+### Step 2 — Obtain API Key
+
+1. Visit **https://openrouteservice.org/dev/#/signup**
+2. Create a free account (email + password)
+3. Verify your email
+4. Navigate to **Dashboard → API Keys**
+5. Generate a new API key (free tier: 2,000 requests/day, 40 requests/min)
+
+### Step 3 — Store Key Securely
+
+- Added as environment variable: `ORS_API_KEY`
+- Set in **Render dashboard → Environment Variables**
+- Accessed in backend via `process.env.ORS_API_KEY` (in `src/config/env.js`)
+
+Add to `backend/.env`:
+```env
+ORS_API_KEY=your_ors_api_key_here
+```
+
+### Step 4 — Usage in Code
+
+Used in `src/services/routingService.js` for route geometry/directions calls to:
+```
+https://api.openrouteservice.org/v2/directions/{profile}?api_key={ORS_API_KEY}&start={lng},{lat}&end={lng},{lat}
+```
+
+---
 
 ## 🔑 Environment Variables
 
@@ -481,9 +649,147 @@ FIREBASE_CLIENT_EMAIL=firebase-adminsdk-xxx@your-project.iam.gserviceaccount.com
 FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
 FIREBASE_DATABASE_URL=https://your-project-default-rtdb.firebaseio.com
 
+# OpenRouteService — get from openrouteservice.org/dev
+ORS_API_KEY=your_ors_api_key_here
+
 # JWT
 JWT_SECRET=any_random_long_string_here
 ```
+
+---
+
+## 🗄️ Database Design
+
+RoadSOS uses **two Firebase products**:
+
+- **Firestore** — permanent structured data (users, hospitals, ambulances, SOS records, session summaries)
+- **Realtime Database** — ephemeral live tracking data (deleted after 24 hours)
+
+**Project:** '`
+**Region:** `asia-south1` (Mumbai)
+
+### Firestore Collections
+
+#### `users`
+```ts
+{
+  id: string,                  // auto-generated document ID
+  name: string,
+  phone: string,               // primary login identifier, 10-digit Indian number
+  email: string,
+  blood_group: string,         // optional, may be empty ''
+  emergency_contacts: array,
+  createdAt: string            // ISO timestamp
+}
+```
+> **Auth note:** Currently phone-number based, with no password verification yet.
+
+#### `hospitals`
+```ts
+{
+  id: string,                  // e.g. "hospital_delhi_1"
+  name: string,
+  lat: number,
+  lng: number,
+  region: string,              // e.g. "Delhi, India"
+  specialization: string,      // e.g. "multispecialty"
+  trauma_care: boolean,
+  phone: string
+}
+```
+Seeded regions: **Delhi (India)**, **Yangon (Myanmar)**, **Dhaka (Bangladesh)** — 6–7 hospitals each.
+
+#### `ambulances`
+```ts
+{
+  id: string,
+  lat: number,
+  lng: number,
+  region: string,
+  status: string,               // "available" | other
+  phone: string
+}
+```
+10 ambulances per region — same 3 regions as `hospitals`.
+
+#### `sos`
+SOS records created via `POST /api/sos`:
+```ts
+{
+  sos_id: string,
+  user_id: string,
+  lat: number,
+  lng: number,
+  ambulance: object,            // assigned ambulance details
+  hospital: object,              // assigned nearest hospital
+  nearby_hospitals: array,
+  route: {
+    duration_mins: number,
+    distance_km: number,
+    geometry: object
+  },
+  createdAt: string
+}
+```
+
+#### `emergencySessions`
+Permanent summary of a live tracking session — saved **only once**, when the session truly ends (resolved, manually ended, hard timeout, or signal lost):
+```ts
+{
+  sessionId: string,
+  userId: string,
+  userName: string,
+  startTime: number,             // epoch ms
+  endTime: number,                // epoch ms
+  duration: number,                // ms
+  startLocation: { lat, lng, timestamp, phase } | null,
+  finalLocation: { lat, lng, address, timestamp } | null,
+  totalPoints: number,             // number of location history points
+  status: string,                   // "resolved" | "ended" | "tracking_lost" | "hard_timeout" | "resolved_by_contact"
+  createdAt: Date
+}
+```
+
+> **Computed fields note:** `distance_km` and `eta_min` are calculated at query time via Haversine formula + OSRM — these are **not** stored permanently in Firestore.
+
+### Realtime Database — `/tracking/{sessionId}`
+
+Live, ephemeral tracking session — auto-deleted 24 hours after the session ends:
+```ts
+{
+  sessionId: string,
+  userId: string,
+  userName: string,
+  phase: 1 | 2 | 3,
+  status: "active" | "warning" | "paused" | "resolved" | "ended" | "tracking_lost",
+  startTime: number,               // epoch ms
+  lastUpdateTime: number,           // epoch ms
+  offlineSince: number | null,
+  hardTimeout: number,                // epoch ms — 60 min from start (or extended)
+  lastLocation: {
+    lat: number,
+    lng: number,
+    address: string,
+    timestamp: number
+  },
+  battery: number | null,
+  network: "online" | "offline",
+  contacts: array,                    // emergency contacts notified for this session
+  history: [
+    { lat: number, lng: number, timestamp: number, phase: 1 | 2 | 3 }
+    // ... up to 50 points (oldest trimmed first)
+  ]
+}
+```
+
+### Tracking Phase Timing (Realtime DB)
+
+| Phase | Duration | Update Interval |
+|-------|----------|------------------|
+| Phase 1 — Critical | 0–20 min | Every 5 seconds |
+| Phase 2 — Reduced | 20–40 min | Every 15 seconds |
+| Phase 3 — Passive | 40–60 min | Every 60 seconds |
+| Hard timeout reached | At 60 min | Status → `warning`; contact can Extend (+30 min, stays Phase 3) or Resolve |
 
 ---
 
@@ -501,6 +807,7 @@ POST /api/auth/signup
 ```
 POST /api/sos/trigger      → Full SOS (SMS + call queue)
 POST /api/sos/bystander    → Incident report (nearby services only)
+POST /api/sos               → Create SOS record (assigns nearest ambulance/hospital, computes route)
 ```
 
 ### Tracking Endpoints
@@ -589,36 +896,9 @@ Opening this in any browser shows:
 
 ---
 
-## 🔐 Firebase Integration
-
-### Authentication
-- Email/password login via Firebase Auth
-- Phone number country code detected at signup(future)
-- System automatically configures emergency numbers for that country(future)
 
 
-### Realtime Database
--Stores live tracking data — location updates in real time.
--Data get deleted after 24 hours(privacy)
-
-### Firestore
-Stores permanent session summaries — only saved once when session truly ends, not on every phase change.
-
-### Firebase Setup (Step by Step)
-
-1. Go to **https://console.firebase.google.com**
-2. Click **Create a project** → give it a name → click Continue
-3. Disable Google Analytics (not needed) → click **Create project**
-4. In left sidebar click **Authentication** → **Get started** → enable **Email/Password**
-5. In left sidebar click **Realtime Database** → **Create database** → choose your region → **Start in test mode**
-6. In left sidebar click **Firestore Database** → **Create database** → **Start in test mode**
-7. Click the ⚙️ gear icon → **Project settings** → **Service accounts** tab
-8. Click **Generate new private key** → download the JSON file
-9. Copy the values from that JSON file into your `backend/.env`
-
----
-
-## 🌍 Multi-Country Support
+## 🌍 Multi-Country Support(for future)
 
 RoadSOS is built for international use. During signup, the user's phone number country code is detected automatically. The system then routes SMS to the correct emergency services for that country.
 
