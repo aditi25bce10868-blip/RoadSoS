@@ -186,11 +186,11 @@ Phone vibrates strongly
 ## 📁 Project Structure
 
 ```
-RoadSOS/                            # GitHub Repository Root
+RoadSOS/                                  # Repository Root
 │
 ├── README.md
 │
-└── RoadSOS/                        # Actual Project Folder
+└── RoadSOS/                              # Main Project
     │
     ├── frontend/
     │   │
@@ -227,17 +227,79 @@ RoadSOS/                            # GitHub Repository Root
     │   │
     │   ├── components/
     │   │   ├── auth/
+    │   │   │   ├── AuthBackground.tsx
+    │   │   │   ├── OTPInput.tsx
+    │   │   │   ├── PhoneInput.tsx
+    │   │   │   └── SocialLoginButtons.tsx
+    │   │   │
     │   │   ├── layout/
+    │   │   │   ├── Header.tsx
+    │   │   │   └── LoginBackground.tsx
+    │   │   │
     │   │   ├── maps/
+    │   │   │   ├── MapView.tsx
+    │   │   │   ├── NearbyServiceCard.tsx
+    │   │   │   ├── OtherServiceCard.tsx
+    │   │   │   ├── RoutePreviewModal.tsx
+    │   │   │   └── ServiceDetailModal.tsx
+    │   │   │
     │   │   ├── sos/
+    │   │   │   ├── AccidentAlertModal.tsx
+    │   │   │   ├── AlertStatus.tsx
+    │   │   │   ├── CountdownTimer.tsx
+    │   │   │   ├── SimulatorPanel.tsx
+    │   │   │   └── SosButton.tsx
+    │   │   │
     │   │   ├── tracking/
+    │   │   │   ├── EmergencyContactCard.tsx
+    │   │   │   ├── ETACard.tsx
+    │   │   │   ├── NetworkWarningBanner.tsx
+    │   │   │   ├── NotificationBanner.tsx
+    │   │   │   ├── RespondingServiceCard.tsx
+    │   │   │   └── SharedLocationCard.tsx
+    │   │   │
     │   │   └── ui/
+    │   │       ├── Button.tsx
+    │   │       ├── Card.tsx
+    │   │       ├── Input.tsx
+    │   │       ├── NotificationBanner.tsx
+    │   │       ├── SettingRow.tsx
+    │   │       └── SettingToggle.tsx
     │   │
     │   ├── hooks/
+    │   │   ├── useAccidentDetection.ts
+    │   │   ├── useLocation.ts
+    │   │   ├── useNotification.ts
+    │   │   ├── useSOS.ts
+    │   │   └── useTracking.ts
+    │   │
     │   ├── services/
+    │   │   ├── api/
+    │   │   │   ├── axiosInstance.ts
+    │   │   │   └── sosApi.ts
+    │   │   │
+    │   │   ├── communication/
+    │   │   │   └── smsService.ts
+    │   │   │
+    │   │   └── location/
+    │   │       ├── gpsService.ts
+    │   │       └── motionService.ts
+    │   │
     │   ├── store/
+    │   │   ├── notificationStore.ts
+    │   │   └── sosStore.ts
+    │   │
     │   ├── constants/
+    │   │   ├── api.ts
+    │   │   ├── colors.ts
+    │   │   ├── serviceData.ts
+    │   │   ├── strings.ts
+    │   │   └── theme.ts
+    │   │
     │   ├── types/
+    │   │   ├── emergency.types.ts
+    │   │   ├── services.types.ts
+    │   │   └── sos.types.ts
     │   │
     │   ├── .gitignore
     │   ├── app.json
@@ -254,18 +316,53 @@ RoadSOS/                            # GitHub Repository Root
     │   │   └── track.html
     │   │
     │   ├── src/
+    │   │   │
     │   │   ├── app.js
+    │   │   │
     │   │   ├── config/
+    │   │   │   ├── db.js
+    │   │   │   ├── emergencyNumbers.js
+    │   │   │   ├── env.js
+    │   │   │   └── firebaseAdmin.js
+    │   │   │
     │   │   ├── controllers/
+    │   │   │   ├── authController.js
+    │   │   │   ├── emergencyController.js
+    │   │   │   ├── sosController.js
+    │   │   │   └── trackingController.js
+    │   │   │
     │   │   ├── middleware/
+    │   │   │   ├── authMiddleware.js
+    │   │   │   └── validationMiddleware.js
+    │   │   │
     │   │   ├── models/
+    │   │   │   ├── emergencyModel.js
+    │   │   │   ├── sosModel.js
+    │   │   │   └── userModel.js
+    │   │   │
     │   │   ├── routes/
+    │   │   │   ├── authRoutes.js
+    │   │   │   ├── emergencyRoutes.js
+    │   │   │   ├── sosRoutes.js
+    │   │   │   ├── trackingRoutes.js
+    │   │   │   └── userRoutes.js
+    │   │   │
     │   │   ├── services/
+    │   │   │   ├── callService.js
+    │   │   │   ├── gpsService.js
+    │   │   │   ├── notificationService.js
+    │   │   │   ├── routingService.js
+    │   │   │   ├── smsService.js
+    │   │   │   └── trackingService.js
+    │   │   │
     │   │   └── utils/
+    │   │       ├── emergencyHelpers.js
+    │   │       ├── responseHandler.js
+    │   │       └── validators.js
     │   │
-    │   ├── server.js
     │   ├── .env
     │   ├── package.json
+    │   ├── server.js
     │   └── README.md
     │
     └── docs/
